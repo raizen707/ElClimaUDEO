@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ElClimaUDEO.View.WeatherPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <SearchBar
+                Placeholder="Guadalajara" HeightRequest="20"
+                Text="{Binding SearchTerm}"
+                SearchCommand="{Binding SearchCommand}"></SearchBar>
+            <Label Text="{Binding Location}"
+                   ></Label>
+            <Label Text="{Binding Condition}"
+                   ></Label>
+            <Image WidthRequest="200"
+                   HeightRequest="200"
+                   Source="{Binding WeatherImage}"></Image>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
