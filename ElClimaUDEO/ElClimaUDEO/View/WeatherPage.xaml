@@ -5,7 +5,7 @@
     <ContentPage.Content>
         <StackLayout>
             <SearchBar
-                Placeholder="Guadalajara" HeightRequest="20"
+                Placeholder="Kiev" HeightRequest="20"
                 Text="{Binding SearchTerm}"
                 SearchCommand="{Binding SearchCommand}"></SearchBar>
             <Label Text="{Binding Location}"
