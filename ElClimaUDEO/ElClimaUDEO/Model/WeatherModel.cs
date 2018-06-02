@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text;
 
 namespace ElClimaUDEO.Model
 {
-
     public partial class WeatherModel
     {
         [JsonProperty("query")]
@@ -184,7 +181,7 @@ namespace ElClimaUDEO.Model
         public string Low { get; set; }
 
         [JsonProperty("text")]
-        public Text Text { get; set; }
+        public string Text { get; set; }
     }
 
     public partial class Guid
@@ -232,8 +229,6 @@ namespace ElClimaUDEO.Model
         public string Speed { get; set; }
     }
 
-    public enum Text { PartlyCloudy, Rain, ScatteredThunderstorms };
-
     public partial class WeatherModel
     {
         public static WeatherModel FromJson(string json) => JsonConvert.DeserializeObject<WeatherModel>(json, ElClimaUDEO.Model.Converter.Settings);
@@ -251,46 +246,8 @@ namespace ElClimaUDEO.Model
             MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
             DateParseHandling = DateParseHandling.None,
             Converters = {
-                new TextConverter(),
                 new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
             },
         };
     }
-
-    internal class TextConverter : JsonConverter
-    {
-        public override bool CanConvert(Type t) => t == typeof(Text) || t == typeof(Text?);
-
-        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null) return null;
-            var value = serializer.Deserialize<string>(reader);
-            switch (value)
-            {
-                case "Partly Cloudy":
-                    return Text.PartlyCloudy;
-                case "Rain":
-                    return Text.Rain;
-                case "Scattered Thunderstorms":
-                    return Text.ScatteredThunderstorms;
-            }
-            throw new Exception("Cannot unmarshal type Text");
-        }
-
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
-        {
-            var value = (Text)untypedValue;
-            switch (value)
-            {
-                case Text.PartlyCloudy:
-                    serializer.Serialize(writer, "Partly Cloudy"); return;
-                case Text.Rain:
-                    serializer.Serialize(writer, "Rain"); return;
-                case Text.ScatteredThunderstorms:
-                    serializer.Serialize(writer, "Scattered Thunderstorms"); return;
-            }
-            throw new Exception("Cannot marshal type Text");
-        }
-    }
 }
-

@@ -76,14 +76,24 @@ namespace ElClimaUDEO.ViewModel
         }
         public async void SearchWeather()
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri(GetUrl());
-            var response =
-                await client.GetAsync(client.BaseAddress);
-            response.EnsureSuccessStatusCode();
-            var jsonResult = response.Content.ReadAsStringAsync().Result;
-            var weather = WeatherModel.FromJson(jsonResult);
-            SetValues(weather);
+            try
+            {
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(GetUrl());
+                var response =
+                    await client.GetAsync(client.BaseAddress);
+                response.EnsureSuccessStatusCode();
+                var jsonResult = response.Content.ReadAsStringAsync().Result;
+                var weather = WeatherModel.FromJson(jsonResult);
+                SetValues(weather);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+           
         }
         private void SetValues(WeatherModel weather)
         {
